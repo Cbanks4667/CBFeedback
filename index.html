@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width-device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>cbFeedback2</title>
+    <!--jQuery library-->
+    <link rel="stylesheet" href="css/themes/my-custom-theme.css" />
+    <link rel="stylesheet" href="css/themes/jquery.mobile.icons.min.css" />
+    <script src="js/lib/jquery-2.1.4.js"></script>
+    <!-- jQuery Mobile Library-->
+    <script src="js/lib/jquery.mobile-1.4.5.js"></script>
+    <script src="js/lib/jquery.validate.js"></script>
+    <!--jQuery Mobile Stylesheet-->
+    <link rel="stylesheet" type="text/css" href="css/lib/jquery.mobile-1.4.5.css">
+    <!--our scripts and styleSheets-->
+    <link rel="stylesheet" type="text/css" href="css/CBMyStyle.css">
+    <script src="js/cbDatabase.js"></script>
+    <script src="js/cbFeedbackDAL.js"></script>
+    <script src="js/cbGlobal.js"></script>
+    <script src="js/cbUtil.js"></script>
+    <script src="js/cbFeedbackFascade.js"></script>
+    <style>
+        .ui-bar-e {
+             background-color: yellow;
+        }
+    </style>
+</head>
+<body>
+<!--page 1-->
+<div id="cbHomePage" data-role="page" >
+    <header data-role="header" data-position="fixed" data-theme="b">
+        <h1 >cb Feedback A2</h1>
+        <div data-role="navbar">
+            <ul>
+                <li  class="ui-btn" ><a href="#cbHomePage" data-icon="home" data-theme="a" class="ui-btn-active ui-state-persist">Home</a></li>
+                <li class ="ui-btn"><a href="#cbAddFeedbackPage" data-icon="plus" data-theme="a">Add</a></li>
+                <li  class="ui-btn"><a href="#cbViewFeedbackPage" data-icon="grid"data-theme="a" >Reviews</a></li>
+                <li  class="ui-btn"><a href="#cbSettingsPage" data-icon="gear" data-theme="a">Settings</a></li>
+            </ul>
+        </div>
+    </header>
+    <section data-role="content">
+
+            <h1>Chris Banks' Feedback A2 App</h1>
+
+
+        <p>Welcome to the Chris Banks' Feeback A2 app. A protoype designed for mobile programming class. This is the
+            first iteration of the app to keep track of different places you visited along with your reviews.
+        </p>
+        <section id="column1">
+
+        </section>
+        <section id="column2">
+            <p align="center"><img src="img/Emoji-Nervous-icon.png"  id="nervous" alt="Nervous Emoji"></p>
+        </section>
+        <section id="contact">
+            <p>Please feel free to contact me if you have any suggestions!</p>
+            <input type="button" data-icon="plus" name="call" value="Call: 519.748.5220">
+            <input type="button" data-icon="plus" name="email" value="cbanks-cc@conestogac.on.ca">
+            <label for="web">Website</label>
+            <input type="button" data-icon="plus" name="web" id="web"value="Conestoga College">
+
+        </section>
+
+
+    </section>
+    <footer data-role="footer" data-position="fixed" data-theme="b">
+        <h4>&copy; 2017 Chris Banks</h4>
+    </footer>
+</div>
+<!--page 2-->
+<div id="cbAddFeedbackPage" data-role="page">
+    <header data-role="header" data-position="fixed" data-theme="b">
+        <h1>Add a Feedback</h1>
+        <div data-role="navbar">
+            <ul>
+                <li  class="ui-btn" ><a href="#cbHomePage" data-icon="home" data-theme="a" >Home</a></li>
+                <li class ="ui-btn"><a href="#cbAddFeedbackPage" data-icon="plus" class="ui-btn-active ui-state-persist" data-theme="a" >Add</a></li>
+                <li  class="ui-btn"><a href="#cbViewFeedbackPage" data-icon="grid"data-theme="a" >Reviews</a></li>
+                <li  class="ui-btn"><a href="#cbSettingsPage" data-icon="gear" data-theme="a">Settings</a></li>
+            </ul>
+        </div>
+    </header>
+    <section data-role="content">
+        <form id="cbAddForm" method="post" action="">
+            <label for="cbBusinessName">Business Name:</label>
+            <input type="text" id="cbBusinessName" name="cbBusinessName">
+            <label for="cboptType">Type:</label>
+            <select id="cboptType" name ="cboptType">
+                <option value="Other">Other</option>
+                <option value="Canadian">Canadian</option>
+            </select>
+            <label for="cbEmail">Reviewer Email:</label>
+            <input type="text" id="cbEmail" name="cbEmail">
+            <label for="cbComments">Reviewer Comments:</label>
+            <textarea name="cbComments" id="cbComments" cols="30" rows="10"></textarea>
+            <label for="cbDate">Reviewer Date</label>
+            <input type="date" id="cbDate" name="cbDate" placeholder="mm/dd/yyyy"></input>
+            <input type="checkbox" id="cbaddRatings" name="cbaddRatings" checked="checked">
+                <label for="cbaddRatings">Do you want to add your ratings?</label>
+            <div id="cbratingsInputs">
+                <label for="cbFoodQuality">Food Quality(0-5):</label>
+                <input type="text" value="0" id="cbFoodQuality" name="cbFoodQuality"></input>
+                <label for="cbService">Service(0-5):</label>
+                <input type="text" value="0" id="cbService" name="cbService"></input>
+                <label for="cbValue">Value(0-5):</label>
+                <input type="text" value="0" id="cbValue" name="cbValue"></input>
+                <label for="cbRatings">Overall Ratings (calculated)</label>
+                <input type="text" id="cbRatings" name="cbRatings" value="0" disabled="disabled">
+            </div>
+
+            <input type="button" id="cbAddRecord" name="cbAddRecord" value="Save" data-inline="true" data-theme="d">
+        </form>
+    </section>
+    <footer data-role="footer" data-position="fixed" data-theme="b">
+        <h4>&copy; 2017 Chris Banks</h4>
+    </footer>
+</div>
+<!--page 3-->
+<div id="cbViewFeedbackPage" data-role="page">
+    <header data-role="header" data-position="fixed" data-theme="b">
+        <h1>List of Reviews</h1>
+        <div data-role="navbar">
+            <ul>
+                <li  class="ui-btn" ><a href="#cbHomePage" data-icon="home" data-theme="a" >Home</a></li>
+                <li class ="ui-btn"><a href="#cbAddFeedbackPage" data-icon="plus" data-theme="a">Add</a></li>
+                <li  class="ui-btn"><a href="#cbViewFeedbackPage" data-icon="grid"data-theme="a" class="ui-btn-active ui-state-persist">Reviews</a></li>
+                <li  class="ui-btn"><a href="#cbSettingsPage" data-icon="gear" data-theme="a">Settings</a></li>
+            </ul>
+        </div>
+    </header>
+    <section data-role="content">
+        <!--<div style="text-align: left;">-->
+            <ul data-role="listview" id="cbFeedbackList">
+               <!-- <li  data-icon="false">
+                    <a href="#cbEditFeedbackPage"><h3>Business Name:</h3>
+                        <p>type:</p>
+                        <p>Reviewer Email:</p>
+                        <p>Reviewer Comments:</p>
+                        <p>Review Date:</p>
+                        <p>Add Ratings ?:</p>
+                        <p>Food Quality:</p>
+                        <p>Service:</p>
+                        <p>Value:</p>
+                        <p>Overal Rating:</p>
+                    </a>
+                </li>
+                <li data-icon="false" >
+                    <a href="#cbEditFeedbackPage"><h3>Business Name:</h3>
+                        <p>type:</p>
+                        <p>Reviewer Email:</p>
+                        <p>Reviewer Comments:</p>
+                        <p>Review Date:</p>
+                        <p>Add Ratings ?:</p>
+                        <p>Food Quality:</p>
+                        <p>Service:</p>
+                        <p>Value:</p>
+                        <p>Overal Rating:</p>
+                    </a>
+                </li>-->
+            </ul>
+
+        <!--</div>-->
+
+    </section>
+    <footer data-role="footer" data-position="fixed" data-theme="b">
+        <h4>&copy; 2017 Chris Banks</h4>
+    </footer>
+</div>
+
+<!--page 4-->
+<div id="cbSettingsPage" data-role="page">
+    <header data-role="header" data-position="fixed" data-theme="b">
+        <h1>Settings</h1>
+        <div data-role="navbar">
+            <ul>
+                <li  class="ui-btn" ><a href="#cbHomePage" data-icon="home" data-theme="a" >Home</a></li>
+                <li class ="ui-btn"><a href="#cbAddFeedbackPage" data-icon="plus" data-theme="a">Add</a></li>
+                <li  class="ui-btn"><a href="#cbViewFeedbackPage" data-icon="grid"data-theme="a" >Reviews</a></li>
+                <li  class="ui-btn"><a href="#cbSettingsPage" data-icon="gear" data-theme="a" class="ui-btn-active ui-state-persist">Settings</a></li>
+            </ul>
+        </div>
+    </header>
+    <section data-role="content">
+        <div>
+            <label for="cbdefaultemail">Default Reviewer Email:</label>
+            <input type="text" id="cbDefaultEmail" name="txtDefaultEmail">
+            <input type="button" id="cbSaveDefaults" name="txtSaveDefaultEmail" value ="Save Defaults" data-theme="d">
+            <input type="reset" id="cbClearDefaults" name="txtClearDefaultEmail" value="Clear Defaults" data-theme="b">
+         </div>
+
+    </section>
+    <footer data-role="footer" data-position="fixed" data-theme="b">
+        <h4>&copy; 2017 Chris Banks</h4>
+    </footer>
+</div>
+
+<!--page for Edits -->
+<div id="cbEditFeedbackPage" data-role="page">
+       <header data-role="header" data-position="fixed" data-theme="b">
+           <h1>Modify Feedback</h1>
+           <div data-role="navbar">
+               <ul>
+                  <li  class="ui-btn" ><a href="#cbHomePage" data-icon="home" data-theme="a" >Home</a></li>
+                  <li class ="ui-btn"><a href="#cbAddFeedbackPage" data-icon="plus" data-theme="a">Add</a></li>
+                  <li  class="ui-btn"><a href="#cbViewFeedbackPage" data-icon="grid"data-theme="a" class="ui-btn-active ui-state-persist">Reviews</a></li>
+                  <li  class="ui-btn"><a href="#cbSettingsPage" data-icon="gear" data-theme="a">Settings</a></li>
+               </ul>
+           </div>
+       </header>
+       <section data-role="content">
+           <form id="cbEditForm" method="post" action="">
+
+               <label for="cbEditBusinessName">Business Name:</label>
+               <input type="text" id="cbEditBusinessName" name="cbEditBusinessName">
+               <label for="cbEditOptType">Type:</label>
+               <select id="cbEditOptType" name ="cbEditOptType">
+                   <option value="Other">Other</option>
+                   <option value="Canadian">Canadian</option>
+               </select>
+               <label for="cbEditEmail">Reviewer Email:</label>
+               <input type="text" id="cbEditEmail" name="cbEditEmail">
+               <label for="cbEditComments">Reviewer Comments:</label>
+               <textarea name="cbComments" id="cbEditComments" cols="30" rows="10"></textarea>
+               <label for="cbEditDate">Reviewer Date</label>
+               <input type="date" id="cbEditDate" name="cbEditDate" placeholder="mm/dd/yyyy"></input>
+               <input type="checkbox" id="cbEditAddRatings" name="cbEditAddRatings">
+               <label for="cbEditAddRatings">Do you want to add your ratings?</label>
+               <div id="cbEditRatingsInputs">
+                   <label for="cbEditFoodQuality">Food Quality(0-5):</label>
+                   <input type="text" value="0" id="cbEditFoodQuality" name="cbEditFoodQuality"></input>
+                   <label for="cbEditService">Service(0-5):</label>
+                   <input type="text" value="0" id="cbEditService" name="cbEditService"></input>
+                   <label for="cbEditValue">Value(0-5):</label>
+                   <input type="text" value="0" id="cbEditValue" name="cbEditValue"></input>
+                   <label for="cbEditRatings">Overall Ratings (calculated)</label>
+                   <input type="text" id="cbEditRatings" name="cbEditRatings" value="0" disabled="disabled">
+               </div>
+
+                <fieldset data-role="controlgroup" data-type="horizontal">
+
+                       <label for="cbCancel">Cancel</label>
+                       <input type="button" name="cbCancel" id="cbCancel" value="Cancel" data-role="button" data-theme="e">
+                       <label for="cbDelete">Delete</label>
+                       <input type="button" name="cbDelete" id="cbDelete" value="Delete" data-role="button" data-theme="b">
+                       <label for="cbUpdate">Update</label>
+                       <input type="button" name="cbUpdate" id="cbUpdate" value="Update" data-role="button" data-theme="d">
+
+                </fieldset>
+
+           </form>
+       </section>
+       <footer data-role="footer" data-position="fixed" data-theme="b">
+           <h4>&copy; 2017 Chris Banks</h4>
+       </footer>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,41 @@
+
+#nervous {
+    width: 75%;
+}
+
+#contact {
+    clear: both;
+}
+
+
+#cbsubmit {
+
+}
+
+
+ .ui-bar-f {
+     color: red;
+     background-color: yellow;
+ }
+
+.ui-body-f {
+    font-weight: bold;
+    color: white;
+    background-color: purple;
+}
+
+.ui-page-theme-f {
+    font-weight: bold;
+    background-color: green;
+}
+
+label.error{
+    color: #F00;
+    font-weight: bold;
+}
+
+input.error,
+select.error,
+textarea.error {
+    border: 1px red solid;
+}
